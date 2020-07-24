@@ -1,0 +1,62 @@
+<html>
+  <head><title>broadcast hub</title></head>
+  <body>
+  	<div id="search-box"></div>
+  	<div id="filter"></div>
+  	<div id="card"></div>
+  </body>
+</html>
+<script type="text/javascript" src="card.js"></script>
+<script type="text/javascript" src="data_source.js"></script>
+<script type="text/javascript" src="filter.js"></script>
+<link rel="stylesheet" href="filter.css">
+<link rel="stylesheet" href="card.css">
+
+<script type="text/javascript">
+	function renderCardSection(data) {
+		var id = document.getElementById('card');
+		id.innerHTML = getCardsHtml(data);
+	}
+	function renderHtml() {
+		var filterDiv = document.getElementById('filter');
+		filterDiv.innerHTML = getFiltersHtml(getSupportedFilters());
+		renderCardSection(getAllCardsData());
+		var searchBoxDiv = document.getElementById('search-box');
+		searchBoxDiv.innerHTML = getSearchBoxHtml();
+	}
+	function addOnlickEventOnFilters() {
+		var filterElements = document.getElementsByClassName(CLASS_NAME_FILTER_NOT_SELECTED);
+		for (var filterElement of filterElements) {
+			let localFilterElement = filterElement;
+			filterElement.onclick = function() {
+				var className = localFilterElement.className;
+				deselectAllFilters();
+				if (className == CLASS_NAME_FILTER_NOT_SELECTED) {
+					localFilterElement.className = CLASS_NAME_FILTER_SELECTED;
+					renderCardSection(getFilteredCardsData(localFilterElement.id));
+					return;
+				}
+				renderCardSection(getAllCardsData());
+			}
+		}
+	}
+	function addEnterClickEventOnSearch() {
+		console.log("ho");
+		var input = document.getElementById(ID_SEARCH_TEXT);
+		input.addEventListener("keyup", function(event) {
+		  // Number 13 is the "Enter" key on the keyboard
+		  console.log(event.keyCode);
+		  if (event.keyCode === 13) {
+		  	console.log("la");
+		    event.preventDefault();
+		    deselectAllFilters();
+		    renderCardSection(getSearchResults(input.value));
+		  }
+		});
+	}
+	window.onload = function() {
+		renderHtml();
+		addOnlickEventOnFilters();
+		addEnterClickEventOnSearch();
+	};
+</script>

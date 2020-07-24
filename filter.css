@@ -1,0 +1,16 @@
+.filter-not-selected-class {
+	border: solid;
+	border-width: thin;
+	padding: 2;
+	margin-right: 10;
+	border-radius: 5px;
+}
+
+.filter-selected-class {
+	border: solid;
+	border-width: thin;
+	padding: 2;
+	margin-right: 10;
+	border-radius: 5px;
+	background-color: grey;
+}
